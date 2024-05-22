@@ -1,7 +1,5 @@
 <!-- src/views/About.vue -->
 <template>
-    <h1>{{ msg }}</h1>
-    <h1>Lista de Cartas</h1>
     <div class="grid grid-cols-3">
     <div v-for="item in items" :key="item.id">
       <RouterLink :to="{name: 'Set', params: { setID: item.id, setName: item.name}}">

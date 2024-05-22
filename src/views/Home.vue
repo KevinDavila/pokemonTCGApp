@@ -1,8 +1,7 @@
 <!-- src/views/Home.vue -->
 <template>
-    <div>
-      <h1>Home</h1>
-      <p>Welcome to the home page.</p>
+    <div class="mt-10">
+      <img class="rounded-lg" src="../assets/Mew VMAX-1280x800.jpg"/>
     </div>
   </template>
   

@@ -1,9 +1,11 @@
 <!-- src/views/About.vue -->
 <template>
-    <h1>Lista de Cartas {{ setName }}</h1>
+  <div class="mt-10">
+    <h1>{{ setName }}</h1>
     <div class="grid grid-cols-4 gap-4 mt-6">
-    <div v-for="item in items" :key="item.id">
-      <img class="col-span-2" :src="item.images.small" />
+      <div v-for="item in items" :key="item.id">
+        <img class="col-span-2" :src="item.images.small" />
+      </div>
     </div>
   </div>
   </template>
@@ -14,9 +16,9 @@
   export default defineComponent({
     name: 'Set',
     props:{
-    setID: String,
-    setName: String,
-    msg: String
+      setID: String,
+      setName: String,
+      msg: String
     },
 
   setup(props){
