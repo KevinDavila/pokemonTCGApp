@@ -1,34 +1,34 @@
 <!-- src/views/About.vue -->
 <template>
-    <div class="grid grid-cols-3">
+  <div class="grid grid-cols-3">
     <div v-for="item in items" :key="item.id">
       <RouterLink :to="{name: 'Set', params: { setID: item.id, setName: item.name}}">
         <img class="h-auto max-w-xs" :src="item.images.logo" />
       </RouterLink>
     </div>
   </div>
-  </template>
+</template>
   
-  <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
-  import  getSets  from '../utils/dataExpansions'
-  export default defineComponent({
-    name: 'Expansions',
-    props:{
+<script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue';
+const getSets = import('../utils/dataExpansions')
+export default defineComponent({
+  name: 'Expansions',
+  props:{
     msg: String
   },
 
   setup(){
-    const sets = getSets()
     const items = ref([])
     const fetchData = async () => {
-      try {
-        for (const itemSet of sets.set) {
-            items.value.push(itemSet)   
+      getSets.then((module) => {
+        const getSets = module.default
+        const itemSet = getSets()
+        for (const item of itemSet.set) {
+          items.value.push(item)
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      })
+      .catch((error) => console.log(error))
     };
     onMounted(() => {
       fetchData();
@@ -37,5 +37,5 @@
       items,
     };
   },
-  });
-  </script>
+});
+</script>

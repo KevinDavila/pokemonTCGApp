@@ -12,7 +12,7 @@
   
   <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import getPaldeaFates from '../utils/dataSetPaldeaFates';
+  const getPaldeaFates  = import("../utils/dataSetPaldeaFates")
   export default defineComponent({
     name: 'Set',
     props:{
@@ -25,16 +25,13 @@
     const items = ref([]);
     const fetchData = async () => {
       console.log(props.setID)
-      const id = props.setID
-      try {
+      //const id = props.setID
         //const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
-        const response =  getPaldeaFates()
-        const data =   response.data;
-        console.log(data)
-        items.value = data
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+        getPaldeaFates.then((module) => {
+         const getDataSetPaldeaFates = module.default
+        const res = getDataSetPaldeaFates()
+        items.value = res.data
+        })
     };
     onMounted(() => {
       fetchData();
