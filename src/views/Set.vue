@@ -5,6 +5,7 @@
     <div class="grid grid-cols-4 gap-4 mt-6">
       <div v-for="item in items" :key="item.id">
         <img class="col-span-2" :src="item.images.small" />
+        <span v-if="item.hasOwnProperty('tcgplayer')">{{ item.tcgplayer }}</span>
       </div>
     </div>
   </div>
@@ -31,6 +32,7 @@
          const getDataSetPaldeaFates = module.default
         const res = getDataSetPaldeaFates()
         items.value = res.data
+        console.log(items)
         })
     };
     onMounted(() => {
