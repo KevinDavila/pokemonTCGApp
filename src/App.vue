@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <div class="container mx-auto px-4 py-1">
     <div class="flex justify-between items-center">
       <!-- Logo -->
-      <img class="size-16" src="./assets/Poke_Ball_icon.svg" />      
+      <img class="size-16" src="./assets/Poke_Ball_icon.svg" alt="logo"/>      
       <!-- Links de navegación -->
       <ul class="flex space-x-4">
         <li><router-link class="hover:text-gray-300" to="/">Home</router-link></li>

@@ -8,9 +8,10 @@
       <img src="../assets/Poke_Ball_icon.svg" alt="Loading..." class="animate-spin h-32 w-32" />
     </div>
     <div v-else>
+      <!-- <input label="Search"/> -->
       <div class="grid grid-cols-4 gap-4 mt-6">
         <div v-for="(item, index) in items" :key="index">
-          <img @click="openModal(item.images.large)" class="col-span-2 cursor-pointer " :src="item.images.small" />
+          <img @click="openModal(item.images.large)" class="col-span-2 cursor-pointer " :src="item.images.small" :alt="item.name"/>
           <div v-if="item.hasOwnProperty('tcgplayer')">
             <a :href="item.tcgplayer.url" target="blank">TCGPlayer</a>
             <div v-for="(key,value) in item.tcgplayer.prices" :key="value">
@@ -31,7 +32,7 @@
   <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
 
-  //const getPaldeaFates  = import("../utils/dataSetPaldeaFates")
+  const getSetExpansion  = import("../utils/dataSetExpansion")
   export default defineComponent({
     name: 'Set',
     props:{
@@ -48,15 +49,19 @@
 
       
         const id = props.setID
-        console.log(id)
-        const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
+        //console.log(id)
+        /* const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
         const data = await response.json()
-        items.value = data.data
-        /* getPaldeaFates.then((module) => {
-        const getDataSetPaldeaFates = module.default
-        const res = getDataSetPaldeaFates()
-        items.value = res.data
-        }) */
+        items.value = data.data */
+        getSetExpansion.then((module) => {
+        const dataSetExpansion = module.default
+        const getCardsByExpansion = dataSetExpansion(id);
+        getCardsByExpansion.then((module: { default: any; })=>{
+            const res = module.default
+            const data = res()
+            items.value = data.data
+        })
+        })
       } catch(error){
         console.error(error)
       }finally{

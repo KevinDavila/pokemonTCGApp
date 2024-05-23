@@ -1,4 +1,4 @@
-function getPaldeaFates(){
+export default function getSetPaldeaFates(){
     const paldea = 
         {
             "data": [
@@ -27292,9 +27292,5 @@ function getPaldeaFates(){
             "count": 245,
             "totalCount": 245
         }
-    
-
     return paldea
 }
-
-export default getPaldeaFates
