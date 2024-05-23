@@ -4,9 +4,9 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <nav class="text-white absolute top-0 z-50">
-  <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center py-4">
+  <nav class="text-white top-0 z-50">
+  <div class="container mx-auto px-4 py-1">
+    <div class="flex justify-between items-center">
       <!-- Logo -->
       <img class="size-16" src="./assets/Poke_Ball_icon.svg" />      
       <!-- Links de navegación -->
@@ -27,7 +27,7 @@ import { RouterLink, RouterView } from 'vue-router'
       </div>
     </div>
   </div> -->
-  <div class="md:container md:mx-auto">
+  <div class="md:container md:mx-auto px-4 py-4">
     <RouterView />
   </div>
 

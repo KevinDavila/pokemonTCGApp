@@ -1,6 +1,6 @@
 <!-- src/views/About.vue -->
 <template>
-  <div class="grid grid-cols-3">
+  <div class="grid grid-cols-3 items-center">
     <div v-for="item in items" :key="item.id">
       <RouterLink :to="{name: 'Set', params: { setID: item.id, setName: item.name}}">
         <img class="h-auto max-w-xs" :src="item.images.logo" />

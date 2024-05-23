@@ -1,6 +1,6 @@
 <!-- src/views/About.vue -->
 <template>
-  <div class="mt-10">
+  <div class="">
     <h1>{{ setName }}</h1>
     <div v-if="isLoading" class="flex items-center justify-center">
       <!-- Loading Spinner -->
