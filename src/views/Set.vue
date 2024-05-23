@@ -2,13 +2,20 @@
 <template>
   <div class="mt-10">
     <h1>{{ setName }}</h1>
-    <div class="grid grid-cols-4 gap-4 mt-6">
-      <div v-for="(item, index) in items" :key="index">
-        <img @click="openModal(item.images.large)" class="col-span-2" :src="item.images.small" />
-        <div v-if="item.hasOwnProperty('tcgplayer')">
-          <a :href="item.tcgplayer.url" cursor-pointer target="blank">TCGPlayer</a>
-          <div v-for="(key,value) in item.tcgplayer.prices" :key="value">
-            <span>{{ value }} - market: {{ key.market }} mid: {{ key.mid }}</span>
+    <div v-if="isLoading" class="flex items-center justify-center">
+      <!-- Loading Spinner -->
+      <!-- <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div> -->
+      <img src="../assets/Poke_Ball_icon.svg" alt="Loading..." class="animate-spin h-32 w-32" />
+    </div>
+    <div v-else>
+      <div class="grid grid-cols-4 gap-4 mt-6">
+        <div v-for="(item, index) in items" :key="index">
+          <img @click="openModal(item.images.large)" class="col-span-2 cursor-pointer " :src="item.images.small" />
+          <div v-if="item.hasOwnProperty('tcgplayer')">
+            <a :href="item.tcgplayer.url" target="blank">TCGPlayer</a>
+            <div v-for="(key,value) in item.tcgplayer.prices" :key="value">
+              <span>{{ value }} - market: ${{ key.market }} USD</span>
+            </div>
           </div>
         </div>
       </div>
@@ -24,7 +31,7 @@
   <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
 
-  const getPaldeaFates  = import("../utils/dataSetPaldeaFates")
+  //const getPaldeaFates  = import("../utils/dataSetPaldeaFates")
   export default defineComponent({
     name: 'Set',
     props:{
@@ -35,22 +42,31 @@
 
   setup(props){
     const items = ref([]);
+    const isLoading = ref(true);
     const fetchData = async () => {
-      console.log(props.setID)
-      //const id = props.setID
-        //const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
-        getPaldeaFates.then((module) => {
+      try{
+
+      
+        const id = props.setID
+        console.log(id)
+        const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
+        const data = await response.json()
+        items.value = data.data
+        /* getPaldeaFates.then((module) => {
         const getDataSetPaldeaFates = module.default
         const res = getDataSetPaldeaFates()
         items.value = res.data
-        console.log(items)
-        })
+        }) */
+      } catch(error){
+        console.error(error)
+      }finally{
+        isLoading.value = false;
+      }
     };
     const isModalOpen = ref(false);
     const selectedImage = ref<string | null>(null);
 
     const openModal = (imageSrc: string) => {
-      console.log(imageSrc)
       selectedImage.value = imageSrc;
       isModalOpen.value = true;
     };
@@ -66,7 +82,8 @@
       isModalOpen,
       selectedImage,
       openModal,
-      closeModal
+      closeModal,
+      isLoading
     };
   },
   });
