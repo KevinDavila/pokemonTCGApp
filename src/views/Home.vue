@@ -1,7 +1,7 @@
 <!-- src/views/Home.vue -->
 <template>
     <div class="mt-10">
-      <img class="rounded-lg" src="../assets/Mew VMAX-1280x800.jpg"/>
+      <img class="w-full h-auto object-cover rounded-lg" src="../assets/Mew VMAX-1280x800.jpg"/>
     </div>
   </template>
   
