@@ -16,10 +16,12 @@ const routes: Array<RouteRecordRaw> = [
     component: Expansions
   },
   {
-    path: '/set/:setID/:setName',
+    path: '/set/',
     name: 'Set',
     component: Set,
-    props: true
+    props: route => ({
+      setID: route.query.setID
+    })
   }
 ];
 

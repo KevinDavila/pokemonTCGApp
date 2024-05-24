@@ -2,7 +2,7 @@
 <template>
   <div class="grid grid-cols-3 items-center">
     <div v-for="item in items" :key="item.id">
-      <RouterLink :to="{name: 'Set', params: { setID: item.id, setName: item.name}}">
+      <RouterLink :to="{ name: 'Set', query: { setID: item.id  } }">
         <img class="h-auto max-w-xs" :src="item.images.logo" />
       </RouterLink>
     </div>

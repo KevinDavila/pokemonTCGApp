@@ -1,13 +1,15 @@
 <!-- src/views/About.vue -->
 <template>
   <div class="">
-    <h1>{{ setName }}</h1>
     <div v-if="isLoading" class="flex items-center justify-center">
       <!-- Loading Spinner -->
       <!-- <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div> -->
       <img src="../assets/Poke_Ball_icon.svg" alt="Loading..." class="animate-spin h-32 w-32" />
     </div>
     <div v-else>
+      <div class="flex justify-center items-center">
+        <img class="object-fit size-auto" :src="setImage"/>
+      </div>
       <input class="mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" label="Search" v-model="searchTerm" placeholder="Search Card"/>
       <div class="grid grid-cols-4 gap-4 mt-6">
         <div v-for="(item, index) in filteredCards" :key="index">
@@ -37,17 +39,16 @@
     name: 'Set',
     props:{
       setID: String,
-      setName: String,
-      msg: String
     },
 
   setup(props){
+    const setImage = ref("")
     const items = ref([]);
     const isLoading = ref(true);
     const fetchData = async () => {
       try{    
         const id = props.setID
-        //console.log(id)
+        console.log(props)
         /* const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
         const data = await response.json()
         items.value = data.data */
@@ -58,8 +59,10 @@
               const res = module.default
               const data = res()
               items.value = data.data
+              setImage.value = items.value[0].set.images.logo
           })
         })
+       
       } catch(error){
         console.error(error)
       }finally{
@@ -91,7 +94,8 @@
       closeModal,
       isLoading,
       searchTerm,
-      filteredCards
+      filteredCards,
+      setImage
     };
   },
   });
