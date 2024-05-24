@@ -8,9 +8,9 @@
       <img src="../assets/Poke_Ball_icon.svg" alt="Loading..." class="animate-spin h-32 w-32" />
     </div>
     <div v-else>
-      <!-- <input label="Search"/> -->
+      <input class="mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" label="Search" v-model="searchTerm" placeholder="Search Card"/>
       <div class="grid grid-cols-4 gap-4 mt-6">
-        <div v-for="(item, index) in items" :key="index">
+        <div v-for="(item, index) in filteredCards" :key="index">
           <img @click="openModal(item.images.large)" class="col-span-2 cursor-pointer " :src="item.images.small" :alt="item.name"/>
           <div v-if="item.hasOwnProperty('tcgplayer')">
             <a :href="item.tcgplayer.url" target="blank">TCGPlayer</a>
@@ -30,7 +30,7 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
+  import { defineComponent, ref, onMounted, computed } from 'vue';
 
   const getSetExpansion  = import("../utils/dataSetExpansion")
   export default defineComponent({
@@ -45,22 +45,20 @@
     const items = ref([]);
     const isLoading = ref(true);
     const fetchData = async () => {
-      try{
-
-      
+      try{    
         const id = props.setID
         //console.log(id)
         /* const response = await fetch("https://api.pokemontcg.io/v2/cards?q=set.id:"+id);
         const data = await response.json()
         items.value = data.data */
-        getSetExpansion.then((module) => {
-        const dataSetExpansion = module.default
-        const getCardsByExpansion = dataSetExpansion(id);
-        getCardsByExpansion.then((module: { default: any; })=>{
-            const res = module.default
-            const data = res()
-            items.value = data.data
-        })
+        await getSetExpansion.then((module) => {
+          const dataSetExpansion = module.default
+          const getCardsByExpansion = dataSetExpansion(id);
+          getCardsByExpansion.then((module: { default: any; })=>{
+              const res = module.default
+              const data = res()
+              items.value = data.data
+          })
         })
       } catch(error){
         console.error(error)
@@ -68,9 +66,12 @@
         isLoading.value = false;
       }
     };
+    const searchTerm = ref('')
+    const filteredCards = computed(()=>{
+      return items.value.filter(item => item.name.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    })
     const isModalOpen = ref(false);
     const selectedImage = ref<string | null>(null);
-
     const openModal = (imageSrc: string) => {
       selectedImage.value = imageSrc;
       isModalOpen.value = true;
@@ -88,7 +89,9 @@
       selectedImage,
       openModal,
       closeModal,
-      isLoading
+      isLoading,
+      searchTerm,
+      filteredCards
     };
   },
   });
